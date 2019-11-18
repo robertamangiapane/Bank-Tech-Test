@@ -2,26 +2,28 @@ require 'bank_account'
 
 describe BankAccount do
   it 'has an initial balance of zero' do
-
     expect(subject.balance).to eq 0
   end
 
-  describe '#print_balance' do
-    it 'print the balance' do
-      expect(subject.print_balance).to eq 0
-    end
+  it 'has an empty initial statement' do
+    statement = "credit || debit || balance"
+    expect(subject.print_statement).to eq(statement)
   end
 
   describe '#deposit' do
-    it 'takes the money amount as argument and add them to the balance' do
-      expect(subject.deposit(10)).to eq 10
+    it 'add a new action to the bank statement' do
+      subject.deposit(10.0)
+      statement = "credit || debit || balance\n10.0 ||  || 10.0"
+      expect(subject.print_statement).to eq(statement)
     end
   end
 
   describe '#withdraw' do
-    it 'takes the money amount as argument and subtract them to the balance' do
-      subject.deposit(10)
-      expect(subject.withdraw(10)).to eq 0
+    it 'add a new action to the bank statement' do
+      subject.deposit(20.0)
+      subject.withdraw(10.0)
+      statement = "credit || debit || balance\n20.0 ||  || 20.0\n || 10.0 || 10.0"
+      expect(subject.print_statement).to eq(statement)
     end
 
     it 'raise an error if the amount inserted is > than the balance' do
