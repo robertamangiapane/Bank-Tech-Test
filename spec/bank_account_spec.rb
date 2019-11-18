@@ -10,10 +10,11 @@ describe Bank_Account do
     it "print the balance" do
       expect(subject.print_balance).to eq 0
     end
-    
-    it "print the updated balance" do
-      subject.balance = 10
-      expect(subject.print_balance).to eq 10
+  end
+
+  describe "#deposit" do
+    it "takes the money amount as argument and add them to the balance" do
+      expect(subject.deposit(10)).to eq 10
     end
   end
 end
