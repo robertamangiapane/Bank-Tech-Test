@@ -5,4 +5,15 @@ describe Bank_Account do
 
     expect(subject.balance).to eq 0
   end
-end  
+
+  describe "#print_balance" do
+    it "print the balance" do
+      expect(subject.print_balance).to eq 0
+    end
+    
+    it "print the updated balance" do
+      subject.balance = 10
+      expect(subject.print_balance).to eq 10
+    end
+  end
+end
