@@ -1,3 +1,5 @@
+require 'date'
+
 class BankAccount
 
   attr_reader :balance
@@ -8,21 +10,25 @@ class BankAccount
   end
 
   def deposit(amount)
+    date = get_date
     @balance += amount
-    add_transaction('credit', amount)
+    add_transaction('credit', amount, date)
   end
 
   def withdraw(amount)
     raise 'No sufficient balance' if amount > @balance
 
+    date = get_date
     @balance -= amount
-    add_transaction('debit', amount)
+    add_transaction('debit', amount, date)
   end
 
   def print_statement
-    bank_statement = "credit || debit || balance"
+
+    bank_statement = "date || credit || debit || balance"
     @transactions.each do |transaction|
       bank_statement += "\n" +
+                        transaction[:date] + " || " +
                         transaction[:credit].to_s + " || " +
                         transaction[:debit].to_s + " || " +
                         transaction[:balance].to_s
@@ -33,12 +39,17 @@ class BankAccount
 
   private
 
-  def add_transaction(transaction, amount)
+  def add_transaction(transaction, amount, date)
     if transaction == 'credit'
-      @transactions.push({ credit: amount, debit: "", balance: @balance })
+      @transactions.push({ date: date, credit: amount, debit: "", balance: @balance })
     elsif transaction == 'debit'
-      @transactions.push({ credit: "", debit: amount, balance: @balance })
+      @transactions.push({ date: date, credit: "", debit: amount, balance: @balance })
     end
+  end
+
+  def get_date
+    date = DateTime.now
+    date.strftime("%d/%m/%Y")
   end
 
 end

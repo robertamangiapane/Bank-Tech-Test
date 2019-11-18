@@ -6,23 +6,35 @@ describe BankAccount do
   end
 
   it 'has an empty initial statement' do
-    statement = "credit || debit || balance"
+    statement = "date || credit || debit || balance"
     expect(subject.print_statement).to eq(statement)
   end
 
   describe '#deposit' do
     it 'add a new action to the bank statement' do
-      subject.deposit(10.0)
-      statement = "credit || debit || balance\n10.0 ||  || 10.0"
+      date = '10/01/2012'
+      allow(subject).to receive(:get_date).and_return(date)
+      subject.deposit(1000.0)
+      statement = "date || credit || debit || balance\n10/01/2012 || 1000.0 ||  || 1000.0"
       expect(subject.print_statement).to eq(statement)
     end
   end
 
   describe '#withdraw' do
     it 'add a new action to the bank statement' do
-      subject.deposit(20.0)
-      subject.withdraw(10.0)
-      statement = "credit || debit || balance\n20.0 ||  || 20.0\n || 10.0 || 10.0"
+      date = '10/01/2012'
+      allow(subject).to receive(:get_date).and_return(date)
+      subject.deposit(1000.0)
+
+      date1 = '13/01/2012'
+      allow(subject).to receive(:get_date).and_return(date1)
+      subject.deposit(2000.0)
+
+      date2 = '14/01/2012'
+      allow(subject).to receive(:get_date).and_return(date2)
+      subject.withdraw(500.0)
+
+      statement = "date || credit || debit || balance\n" + date + " || 1000.0 ||  || 1000.0\n" + date1 + " || 2000.0 ||  || 3000.0\n" + date2 + " ||  || 500.0 || 2500.0"
       expect(subject.print_statement).to eq(statement)
     end
 
