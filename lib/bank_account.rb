@@ -1,4 +1,4 @@
-class Bank_Account
+class BankAccount
 
   attr_reader :balance
 
@@ -15,11 +15,9 @@ class Bank_Account
   end
 
   def withdraw(amount)
-    if amount > @balance
-      raise "No sufficient balance"
-    else
-      @balance -= amount
-    end
+    raise 'No sufficient balance' if amount > @balance
+
+    @balance -= amount
   end
 
 end
