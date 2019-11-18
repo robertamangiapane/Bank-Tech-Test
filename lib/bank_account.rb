@@ -14,4 +14,12 @@ class Bank_Account
     @balance += amount
   end
 
+  def withdraw(amount)
+    if amount > @balance
+      raise "No sufficient balance"
+    else
+      @balance -= amount
+    end
+  end
+
 end
