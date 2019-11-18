@@ -26,7 +26,7 @@ class BankAccount
   def print_statement
 
     bank_statement = "date || credit || debit || balance"
-    @transactions.each do |transaction|
+    @transactions.reverse_each do |transaction|
       bank_statement += "\n" +
                         transaction[:date] + " || " +
                         transaction[:credit].to_s + " || " +

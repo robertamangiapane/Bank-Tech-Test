@@ -34,7 +34,11 @@ describe BankAccount do
       allow(subject).to receive(:get_date).and_return(date2)
       subject.withdraw(500.0)
 
-      statement = "date || credit || debit || balance\n" + date + " || 1000.0 ||  || 1000.0\n" + date1 + " || 2000.0 ||  || 3000.0\n" + date2 + " ||  || 500.0 || 2500.0"
+      statement = "date || credit || debit || balance\n" +
+                  date2 + " ||  || 500.0 || 2500.0\n" +
+                  date1 + " || 2000.0 ||  || 3000.0\n" +
+                  date + " || 1000.0 ||  || 1000.0"
+
       expect(subject.print_statement).to eq(statement)
     end
 
