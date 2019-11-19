@@ -1,53 +1,52 @@
+require_relative 'transaction'
 require 'date'
 
 class BankAccount
 
   attr_reader :balance
 
-  def initialize
+  def initialize(transaction = Transaction)
     @balance = 0.00
     @transactions = []
+    @bank_statement = "date || credit || debit || balance"
+    @transaction = transaction
+
   end
 
   def deposit(amount)
-    date = get_date
-    @balance += amount
-    add_transaction('credit', amount, date)
+    transaction = @transaction.new(amount, @balance)
+    @balance = transaction.deposit
+    add_transaction(transaction)
   end
 
   def withdraw(amount)
     raise 'No sufficient balance' if amount > @balance
 
-    date = get_date
-    @balance -= amount
-    add_transaction('debit', amount, date)
+    transaction = @transaction.new(amount, @balance)
+    @balance = transaction.withdraw
+    add_transaction(transaction)
   end
 
   def print_statement
-
-    bank_statement = "date || credit || debit || balance"
     @transactions.reverse_each do |transaction|
-      bank_statement += "\n" +
-                        transaction[:date] + " || " +
+      @bank_statement += "\n" +
+                        transaction[:date].to_s + " || " +
                         transaction[:credit].to_s + " || " +
                         transaction[:debit].to_s + " || " +
                         transaction[:balance].to_s
     end
 
-    bank_statement
+    @bank_statement
   end
 
   private
 
-  def add_transaction(transaction, amount, date)
-    if transaction == 'credit'
-      @transactions.push({ date: date, credit: amount, debit: "", balance: @balance })
-    elsif transaction == 'debit'
-      @transactions.push({ date: date, credit: "", debit: amount, balance: @balance })
-    end
+  def add_transaction(transaction)
+    @transactions.push({ date: date_now, credit: transaction.deposit_value,
+                        debit: transaction.withdraw_value, balance: @balance })
   end
 
-  def get_date
+  def date_now
     date = DateTime.now
     date.strftime("%d/%m/%Y")
   end
