@@ -35,8 +35,7 @@ class BankAccount
                         transaction[:debit].to_s + " || " +
                         transaction[:balance].to_s
     end
-
-    @bank_statement
+    print @bank_statement
   end
 
   private

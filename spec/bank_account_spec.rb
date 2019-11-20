@@ -43,7 +43,7 @@ describe BankAccount do
 
   it 'has an empty initial statement' do
     statement = "date || credit || debit || balance"
-    expect(subject.print_statement).to eq(statement)
+    expect{ subject.print_statement }.to output(statement).to_stdout
   end
 
   describe '#deposit' do
@@ -55,7 +55,8 @@ describe BankAccount do
                   date1 + " || " +
                   deposit1 + " ||  || " +
                   new_balance1
-      expect(subject.print_statement).to eq(statement)
+
+      expect{ subject.print_statement }.to output(statement).to_stdout
     end
   end
 
@@ -75,7 +76,7 @@ describe BankAccount do
                   date2 + " || 2000.0 ||  || 3000.0\n" +
                   date1 + " || 1000.0 ||  || 1000.0"
 
-      expect(subject.print_statement).to eq(statement)
+      expect{ subject.print_statement }.to output(statement).to_stdout
     end
 
     it 'raise an error if the amount inserted is > than the balance' do
